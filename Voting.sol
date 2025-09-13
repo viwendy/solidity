@@ -9,28 +9,33 @@ pragma solidity ^0.8.0;
  */
 contract Voting  {
     
-    mapping (string => uint) votes;
-    string[] candidates;
-    address own;
+    mapping (string => uint) userMap;
+    string[] userArr;
+    address owner;
 
     constructor(){
-        own = msg.sender;
+        owner = msg.sender;
     }
 
-    function vote(string memory user) public  {
-        candidates.push(user);
-        votes[user]++;
+    function vote(string memory user) public {
+        userArr.push(user);
+        userMap[user]++;
     }
- 
+
     function getVotes(string memory user) public view returns (uint) {
-        return votes[user];
+        return userMap[user];
+    }
+
+    function getUserArr() public view returns (string[] memory) {
+        return userArr;
     }
 
     function resetVotes() public {
-        require(msg.sender == own, "no permisson");
-        for (uint i = 0; i < candidates.length; i++){
-            delete (votes[candidates[i]]);
+        require(msg.sender == owner, "no permisson");
+        for (uint i = 0; i < userArr.length; i++) {
+            delete (userMap[userArr[i]]);
         }
+        delete userArr;
     }
 
 }
